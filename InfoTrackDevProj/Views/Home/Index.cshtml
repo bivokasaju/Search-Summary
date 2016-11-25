@@ -1,0 +1,69 @@
+﻿@model InfoTrackDevProj.Models.inputModel
+
+@{
+    Layout = "~/Views/Shared/_MainLayout.cshtml";
+    ViewBag.Title = "Google search summary";
+}
+
+
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    <legend>Google Search Result Summary </legend>
+    <fieldset>
+        <div class="form-group margin-top">
+            @Html.LabelFor(m => m.keyword, "Keyword: ", new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.keyword, new { @class = "form-control", placeholder = "eg. online title search", data_bind="value: keyword, valueUpdate: 'keyup'" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.url, "URL: ", new { @class = "col-md-3 control-label" })
+            <div class="col-md-6">
+                @Html.TextBoxFor(m => m.url, new { @class = "form-control", placeholder = "eg. www.infotrack.com.au", data_bind="value: url, valueUpdate: 'keyup'" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-3">
+                <button type="submit" class="btn btn-primary">Get Results</button>
+            </div>
+        </div>
+
+        @if (IsPost)
+        {
+            <hr />
+            <div class="col-md-6 col-md-offset-3">
+                <div class="alert alert-dismissible @(Model.position == "0" ? "alert-danger" : "alert-success") ">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    The keyword <strong>@Html.DisplayFor(m => m.keyword)</strong> generated <strong>@Html.DisplayFor(m => m.count) result(s)</strong> with the url <strong>@Html.DisplayFor(m => m.url)</strong> in the following position(s): <strong>@Html.DisplayFor(m => m.position) </strong>
+                </div>
+            </div>
+        }
+        else
+        {
+            <hr />
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-3">
+                    <h3>Your search summary</h3>
+                    <p>You are searching for the count and positions of the url <strong><span data-bind="text: url" /></strong> <br /> when you type in the the keyword <strong><span data-bind="text: keyword" /></strong>.</p>
+                </div>
+            </div>
+        }
+
+        
+    </fieldset>
+}
+
+@*@ViewBag.Response*@
+
+@section Scripts{
+    <script>
+        var vm = {
+            url: ko.observable(),
+            keyword: ko.observable()
+        }
+
+        ko.applyBindings(vm);
+    </script>
+}
